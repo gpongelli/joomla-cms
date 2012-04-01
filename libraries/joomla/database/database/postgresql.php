@@ -69,7 +69,7 @@ class JDatabasePostgreSQL extends JDatabase
 		$user		= (isset($options['user']))	? $options['user']		: '';
 		$password	= (isset($options['password']))	? $options['password']	: '';
 		$database	= (isset($options['database'])) ? $options['database']	: '';
-		$port		= (isset($options['port'])) ? ' port=' . $options['port'] : '';
+		$port		= (!empty($options['port'])) ? ' port=' . $options['port'] : '';
 
 		// perform a number of fatality checks, then return gracefully
 		if (!function_exists('pg_connect'))

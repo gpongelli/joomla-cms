@@ -66,7 +66,7 @@ class JDatabaseMySQL extends JDatabase
 		$options['password'] = (isset($options['password'])) ? $options['password'] : '';
 		$options['database'] = (isset($options['database'])) ? $options['database'] : '';
 		$options['select'] = (isset($options['select'])) ? (bool) $options['select'] : true;
-		$options['port'] = (isset($options['port'])) ? ':' . $options['port'] : '';
+		$options['port'] = (!empty($options['port'])) ? ':' . $options['port'] : '';
 
 		// Make sure the MySQL extension for PHP is installed and enabled.
 		if (!function_exists('mysql_connect'))

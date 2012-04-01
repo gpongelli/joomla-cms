@@ -69,6 +69,7 @@ class JDatabasePostgreSQL extends JDatabase
 		$user		= (isset($options['user']))	? $options['user']		: '';
 		$password	= (isset($options['password']))	? $options['password']	: '';
 		$database	= (isset($options['database'])) ? $options['database']	: '';
+		$port		= (isset($options['port'])) ? ' port=' . $options['port'] : '';
 
 		// perform a number of fatality checks, then return gracefully
 		if (!function_exists('pg_connect'))
@@ -88,7 +89,7 @@ class JDatabasePostgreSQL extends JDatabase
 		}
 
 		// connect to the server
-		if (!($this->connection = @pg_connect("host={$host} dbname={$database} user={$user} password={$password}")))
+		if (!($this->connection = @pg_connect("host={$host} {$port} dbname={$database} user={$user} password={$password}")))
 		{
 			// Legacy error handling switch based on the JError::$legacy switch.
 			// @deprecated  11.3

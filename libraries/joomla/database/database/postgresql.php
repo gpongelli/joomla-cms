@@ -447,6 +447,8 @@ class JDatabasePostgreSQL extends JDatabase
 	public function insertObject($table, &$object, $key = null)
 	{
 		// Initialise variables.
+		$columns = $this->getTableColumns($table);
+
 		$fields = array();
 		$values = array();
 
@@ -467,7 +469,7 @@ class JDatabasePostgreSQL extends JDatabase
 
 			// Prepare and sanitize the fields and values for the database query.
 			$fields[] = $this->quoteName($k);
-			$values[] = is_numeric($v) ? $v : $this->quote($v);
+			$values[] = $this->sqlValue($columns, $k, $v);
 		}
 
 		// Create the base insert statement.
@@ -1015,6 +1017,42 @@ class JDatabasePostgreSQL extends JDatabase
 	}
 
 	/**
+	 * This function return a field value as a prepared string to be used in a SQL statement.
+	 *
+	 * @param   string  $table_fields  The table fields types returned by ::getTableColumns.
+	 * @param   string  $value         The php variable value.
+	 * 
+	 * @return  string  The quoted string.
+	 *
+	 * @since   11.3
+	 */
+	public function sqlValue($columns, $field_name, $field_value)
+	{
+		switch ($columns[$field_name]) {
+			case 'boolean':
+				if ($field_value == 't')
+				{
+					$field_value = true;
+				}
+				$val = is_bool($field_value) ? ( $field_value ? 'TRUE' : 'FALSE' ) : 'NULL';
+				break;
+			case 'bigint':
+			case 'bigserial':
+			case 'integer':
+			case 'money':
+			case 'numeric':
+			case 'real':
+			case 'smallint':
+			case 'serial':
+				$val = $field_value;
+				break;
+			default:
+				$val = $this->quote($field_value);
+		}
+		return $val;
+	}
+
+	/**
 	 * Method to commit a transaction.
 	 *
 	 * @return  void
@@ -1125,6 +1163,8 @@ class JDatabasePostgreSQL extends JDatabase
 	public function updateObject($table, &$object, $key, $nulls = false)
 	{
 		// Initialise variables.
+		$columns = $this->getTableColumns($table);
+		
 		$fields = array();
 		$where = '';
 
@@ -1145,7 +1185,8 @@ class JDatabasePostgreSQL extends JDatabase
 			// Set the primary key to the WHERE clause instead of a field to update.
 			if ($k == $key)
 			{
-				$where = $this->quoteName($k) . '=' . (is_numeric($v) ? $v : $this->quote($v));
+				$key_val = $this->sqlValue($columns, $k, $v);
+				$where = $this->quoteName($k) . '=' . $key_val;
 				continue;
 			}
 
@@ -1163,10 +1204,9 @@ class JDatabasePostgreSQL extends JDatabase
 					continue;
 				}
 			}
-			// The field is not null so we prep it for update.
 			else
 			{
-				$val = (is_numeric($v) ? $v : $this->quote($v));
+				$val = $this->sqlValue($columns, $k, $v);
 			}
 
 			// Add the field to be updated.

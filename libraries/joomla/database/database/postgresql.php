@@ -1044,8 +1044,13 @@ class JDatabasePostgreSQL extends JDatabase
 			case 'real':
 			case 'smallint':
 			case 'serial':
-				$val = $field_value;
+				$val = empty($field_value) ? 'NULL' : $field_value;
 				break;
+			case 'date':
+				if (empty($field_value))
+				{
+					$field_value = $this->getNullDate();
+				}
 			default:
 				$val = $this->quote($field_value);
 		}

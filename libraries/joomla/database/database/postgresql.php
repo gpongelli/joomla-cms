@@ -1044,7 +1044,7 @@ class JDatabasePostgreSQL extends JDatabase
 			case 'real':
 			case 'smallint':
 			case 'serial':
-				$val = empty($field_value) ? 'NULL' : $field_value;
+				$val = strlen($field_value) == 0 ? 'NULL' : $field_value;
 				break;
 			case 'date':
 				if (empty($field_value))

@@ -1830,7 +1830,7 @@ CREATE TABLE "#__modules" (
   "id" serial NOT NULL,
   "title" character varying(100) DEFAULT '' NOT NULL,
   "note" character varying(255) DEFAULT '' NOT NULL,
-  "content" text NOT NULL,
+  "content" text DEFAULT '' NOT NULL,
   "ordering" bigint DEFAULT 0 NOT NULL,
   "position" character varying(50) DEFAULT '' NOT NULL,
   "checked_out" integer DEFAULT 0 NOT NULL,

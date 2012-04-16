@@ -1841,7 +1841,7 @@ CREATE TABLE "#__modules" (
   "module" character varying(50) DEFAULT NULL,
   "access" bigint DEFAULT 0 NOT NULL,
   "showtitle" smallint DEFAULT 1 NOT NULL,
-  "params" text NOT NULL,
+  "params" text DEFAULT '' NOT NULL,
   "client_id" smallint DEFAULT 0 NOT NULL,
   "language" character varying(7) NOT NULL,
   PRIMARY KEY ("id")

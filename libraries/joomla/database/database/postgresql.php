@@ -1048,14 +1048,15 @@ class JDatabasePostgreSQL extends JDatabase
 	/**
 	 * This function return a field value as a prepared string to be used in a SQL statement.
 	 *
-	 * @param   string  $table_fields  The table fields types returned by ::getTableColumns.
-	 * @param   string  $value         The php variable value.
+	 * @param   string  $columns       The array of field columns returned by JDatabasePostgreSQL::getTableColumns.
+	 * @param   string  $field_name    Name of field that will receive the converted SQL value
+	 * @param   string  $field_value   Php variable value to be converted to SQL.
 	 * 
 	 * @return  string  The quoted string.
 	 *
 	 * @since   11.3
 	 */
-	public function sqlValue($columns, $field_name, $field_value)
+	public function sqlValue(&$columns, $field_name, $field_value)
 	{
 		switch ($columns[$field_name]) {
 			case 'boolean':

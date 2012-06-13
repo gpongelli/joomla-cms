@@ -1058,32 +1058,39 @@ class JDatabasePostgreSQL extends JDatabase
 	 */
 	public function sqlValue(&$columns, $field_name, $field_value)
 	{
-		switch ($columns[$field_name]) {
+		switch ($columns[$field_name])
+		{
 			case 'boolean':
+				$val = 'NULL';
 				if ($field_value == 't')
 				{
-					$field_value = true;
+					$val = 'TRUE';
 				}
-				$val = is_bool($field_value) ? ( $field_value ? 'TRUE' : 'FALSE' ) : 'NULL';
-				break;
-			case 'bigint':
-			case 'bigserial':
-			case 'integer':
-			case 'money':
-			case 'numeric':
-			case 'real':
-			case 'smallint':
-			case 'serial':
-				$val = strlen($field_value) == 0 ? 'NULL' : $field_value;
-				break;
-			case 'date':
-				if (empty($field_value))
+				elseif ($field_value == 'f')
 				{
-					$field_value = $this->getNullDate();
+					$val = 'FALSE';
 				}
-			default:
-				$val = $this->quote($field_value);
+			break;
+		case 'bigint':
+		case 'bigserial':
+		case 'integer':
+		case 'money':
+		case 'real':
+		case 'smallint':
+		case 'serial':
+		case 'numeric,':
+			$val = strlen($field_value) == 0 ? 'NULL' : $field_value;
+			break;
+		case 'date':
+		case 'timestamp without time zone':
+			if (empty($field_value))
+			{
+				$field_value = $this->getNullDate();
+			}
+		default:
+			$val = $this->quote($field_value);
 		}
+
 		return $val;
 	}
 

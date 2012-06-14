@@ -1061,7 +1061,6 @@ class JDatabasePostgreSQL extends JDatabase
 		switch ($columns[$field_name])
 		{
 			case 'boolean':
-				$val = 'NULL';
 				if ($field_value == 't')
 				{
 					$val = 'TRUE';
@@ -1074,6 +1073,10 @@ class JDatabasePostgreSQL extends JDatabase
 				{
 					$val = $field_value ? 'TRUE' : 'FALSE';
 				}
+				else
+				{
+					$val = 'NULL';
+				}
 				break;
 			case 'bigint':
 			case 'bigserial':
@@ -1083,7 +1086,7 @@ class JDatabasePostgreSQL extends JDatabase
 			case 'smallint':
 			case 'serial':
 			case 'numeric':
-				$val = strlen($field_value) == 0 ? 'NULL' : $field_value;
+				$val = strlen($field_value) == 0 ? 'NULL' : strval($field_value);
 				break;
 			case 'date':
 			case 'timestamp without time zone':

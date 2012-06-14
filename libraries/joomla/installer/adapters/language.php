@@ -283,7 +283,7 @@ class JInstallerLanguage extends JAdapterInstance
 
 		// Clobber any possible pending updates
 		$update = JTable::getInstance('update');
-		$uid = $update->find(array('element' => $this->get('tag'), 'type' => 'language', 'client_id' => '', 'folder' => ''));
+		$uid = $update->find(array('element' => $this->get('tag'), 'type' => 'language', 'client_id' => $clientId, 'folder' => ''));
 		if ($uid)
 		{
 			$update->delete($uid);

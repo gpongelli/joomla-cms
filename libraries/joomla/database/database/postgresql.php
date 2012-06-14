@@ -1056,7 +1056,7 @@ class JDatabasePostgreSQL extends JDatabase
 	 *
 	 * @since   11.3
 	 */
-	protected function sqlValue(&$columns, $field_name, $field_value)
+	public function sqlValue(&$columns, $field_name, $field_value)
 	{
 		switch ($columns[$field_name])
 		{

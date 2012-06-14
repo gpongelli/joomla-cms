@@ -1070,25 +1070,29 @@ class JDatabasePostgreSQL extends JDatabase
 				{
 					$val = 'FALSE';
 				}
-			break;
-		case 'bigint':
-		case 'bigserial':
-		case 'integer':
-		case 'money':
-		case 'real':
-		case 'smallint':
-		case 'serial':
-		case 'numeric,':
-			$val = strlen($field_value) == 0 ? 'NULL' : $field_value;
-			break;
-		case 'date':
-		case 'timestamp without time zone':
-			if (empty($field_value))
-			{
-				$field_value = $this->getNullDate();
-			}
-		default:
-			$val = $this->quote($field_value);
+				elseif (is_bool($field_value))
+				{
+					$val = $field_value ? 'TRUE' : 'FALSE';
+				}
+				break;
+			case 'bigint':
+			case 'bigserial':
+			case 'integer':
+			case 'money':
+			case 'real':
+			case 'smallint':
+			case 'serial':
+			case 'numeric':
+				$val = strlen($field_value) == 0 ? 'NULL' : $field_value;
+				break;
+			case 'date':
+			case 'timestamp without time zone':
+				if (empty($field_value))
+				{
+					$field_value = $this->getNullDate();
+				}
+			default:
+				$val = $this->quote($field_value);
 		}
 
 		return $val;
